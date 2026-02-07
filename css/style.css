@@ -275,7 +275,7 @@ ul, ol {
     align-items: center;
     justify-content: center;
     z-index: var(--z-preloader);
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
 }
 
 #preloader.loaded {
