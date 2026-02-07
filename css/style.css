@@ -3753,3 +3753,19 @@ textarea:focus {
 .skip-link:focus {
     top: 0;
 }
+/* FORCE FIX FOR HEADER */
+.sticky-header .navbar,
+.sticky-header .navbar .container {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+/* Agar logo aur text bhi upar neeche aa rahe hain to ye line add karein */
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+}
