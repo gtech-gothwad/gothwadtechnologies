@@ -1,274 +1,130 @@
-/* ============================================== */
-/* GOTHWAD TECHNOLOGIES PVT. LTD.                */
-/* Main JavaScript File                           */
-/* Author: Gothwad Technologies Team             */
-/* ============================================== */
-
-/* ============================================== */
-/* TABLE OF CONTENTS                              */
-/* ============================================== */
-/*
-  1. GLOBAL VARIABLES & INITIALIZATION
-  2. PRELOADER
-  3. STICKY HEADER
-  4. SMOOTH SCROLLING
-  5. ACTIVE NAV LINK ON SCROLL
-  6. COUNTER ANIMATION
-  7. AOS INITIALIZATION
-  8. PARTICLES.JS CONFIGURATION
-  9. CONTACT DRAWER
-  10. BACK TO TOP BUTTON
-  11. PRICING TOGGLE
-  12. FORM HANDLING
-  13. NEWSLETTER SUBSCRIPTION
-  14. MOBILE MENU
-  15. TOOLTIPS & POPOVERS
-  16. APP STORE TABS
-  17. TESTIMONIAL SLIDER
-  18. TYPING EFFECT
-  19. LAZY LOADING IMAGES
-  20. UTILITY FUNCTIONS
-*/
+/* ============================================
+   GOTHWAD TECHNOLOGIES - MAIN JAVASCRIPT
+   ============================================ */
 
 'use strict';
 
-/* ============================================== */
-/* 1. GLOBAL VARIABLES & INITIALIZATION           */
-/* ============================================== */
-
-// DOM Elements
-const DOM = {
-    preloader: document.getElementById('preloader'),
-    header: document.getElementById('main-header'),
-    backToTop: document.getElementById('backToTop'),
-    floatingContactBtn: document.getElementById('floatingContactBtn'),
-    contactDrawer: document.getElementById('contactDrawer'),
-    drawerClose: document.getElementById('drawerClose'),
-    drawerOverlay: document.querySelector('.drawer-overlay'),
-    contactForm: document.getElementById('contactForm'),
-    quickContactForm: document.getElementById('quickContactForm'),
-    newsletterForm: document.getElementById('newsletterForm'),
-    billingToggle: document.getElementById('billingToggle'),
-    navLinks: document.querySelectorAll('.navbar-nav .nav-link'),
-    sections: document.querySelectorAll('section[id]'),
-    counters: document.querySelectorAll('.stat-number[data-count]'),
-    navbarToggler: document.querySelector('.navbar-toggler'),
-    navbarCollapse: document.querySelector('.navbar-collapse')
-};
-
-// Configuration
-const CONFIG = {
-    scrollOffset: 100,
-    headerScrollClass: 'scrolled',
-    animationDuration: 1000,
-    counterSpeed: 50,
-    typingSpeed: 100,
-    particlesEnabled: true
-};
-
-// Initialize when DOM is ready
+// ========== DOM READY ==========
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Gothwad Technologies - Website Initialized');
-    
-    // Initialize all modules
+    // Initialize all functions
     initPreloader();
-    initStickyHeader();
+    initHeader();
     initSmoothScroll();
-    initActiveNavLink();
     initCounterAnimation();
     initAOS();
-    initParticles();
+    initAppFilter();
+    initPortfolioFilter();
+    initContactForm();
+    initDrawerContactForm();
     initContactDrawer();
     initBackToTop();
-    initPricingToggle();
-    initFormHandling();
     initNewsletterForm();
-    initMobileMenu();
-    initTooltips();
-    initAppStoreTabs();
-    initLazyLoading();
+    initNavHighlight();
     initTypingEffect();
+    
+    // Track page view
+    trackPageView();
 });
 
-/* ============================================== */
-/* 2. PRELOADER                                   */
-/* ============================================== */
-
-/*function initPreloader() {
-    const preloader = DOM.preloader;
+// ========== PRELOADER ==========
+function initPreloader() {
+    const preloader = document.getElementById('preloader');
     
-    if (!preloader) return;
-    
-    // Hide preloader when page is fully loaded
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            preloader.classList.add('loaded');
-            
-            // Remove from DOM after animation
+    if (preloader) {
+        window.addEventListener('load', function() {
             setTimeout(function() {
-                preloader.style.display = 'none';
-            }, 600);
-        }, 500);
-    });
-    
-    // Fallback: Hide preloader after 5 seconds
-    setTimeout(function() {
-        if (!preloader.classList.contains('loaded')) {
-            preloader.classList.add('loaded');
-        }
-    }, 5000);
-}  
-
-*/
-
-/* ============================================== */
-/* 3. STICKY HEADER                               */
-/* ============================================== */
-
-function initStickyHeader() {
-    const header = DOM.header;
-    
-    if (!header) return;
-    
-    let lastScroll = 0;
-    let ticking = false;
-    
-    function updateHeader() {
-        const currentScroll = window.pageYOffset;
-        
-        // Add/remove scrolled class
-        if (currentScroll > CONFIG.scrollOffset) {
-            header.classList.add(CONFIG.headerScrollClass);
-        } else {
-            header.classList.remove(CONFIG.headerScrollClass);
-        }
-        
-        // Hide/show header on scroll direction (optional)
-        // if (currentScroll > lastScroll && currentScroll > 200) {
-        //     header.style.transform = 'translateY(-100%)';
-        // } else {
-        //     header.style.transform = 'translateY(0)';
-        // }
-        
-        lastScroll = currentScroll;
-        ticking = false;
+                preloader.classList.add('hidden');
+                
+                // Remove from DOM after animation
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
     }
-    
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(updateHeader);
-            ticking = true;
-        }
-    });
-    
-    // Initial check
-    updateHeader();
 }
 
-/* ============================================== */
-/* 4. SMOOTH SCROLLING                            */
-/* ============================================== */
-
-function initSmoothScroll() {
-    // Get all anchor links
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+// ========== STICKY HEADER ==========
+function initHeader() {
+    const header = document.getElementById('mainHeader');
     
-    anchorLinks.forEach(function(link) {
+    if (header) {
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            // Add shadow on scroll
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Hide/show header on scroll direction
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+    }
+}
+
+// ========== SMOOTH SCROLL ==========
+function initSmoothScroll() {
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    links.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             
-            // Skip if just "#" or empty
-            if (href === '#' || href === '') return;
-            
-            const target = document.querySelector(href);
-            
-            if (target) {
+            if (href !== '#') {
                 e.preventDefault();
                 
-                const headerHeight = DOM.header ? DOM.header.offsetHeight : 0;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = targetPosition - headerHeight - 20;
+                const target = document.querySelector(href);
                 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                closeMobileMenu();
-                
-                // Update URL hash without jumping
-                history.pushState(null, null, href);
-            }
-        });
-    });
-}
-
-/* ============================================== */
-/* 5. ACTIVE NAV LINK ON SCROLL                   */
-/* ============================================== */
-
-function initActiveNavLink() {
-    const sections = DOM.sections;
-    const navLinks = DOM.navLinks;
-    
-    if (!sections.length || !navLinks.length) return;
-    
-    function setActiveLink() {
-        const scrollPosition = window.pageYOffset + 150;
-        
-        sections.forEach(function(section) {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const sectionId = section.getAttribute('id');
-            
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                navLinks.forEach(function(link) {
-                    link.classList.remove('active');
+                if (target) {
+                    const headerHeight = document.getElementById('mainHeader').offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
                     
-                    if (link.getAttribute('href') === '#' + sectionId) {
-                        link.classList.add('active');
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                        if (bsCollapse) {
+                            bsCollapse.hide();
+                        }
                     }
-                });
+                    
+                    // Track click
+                    trackClick('nav-' + href.replace('#', ''));
+                }
             }
         });
-    }
-    
-    // Throttled scroll listener
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-        if (scrollTimeout) {
-            window.cancelAnimationFrame(scrollTimeout);
-        }
-        scrollTimeout = window.requestAnimationFrame(setActiveLink);
     });
-    
-    // Initial check
-    setActiveLink();
 }
 
-/* ============================================== */
-/* 6. COUNTER ANIMATION                           */
-/* ============================================== */
-
+// ========== COUNTER ANIMATION ==========
 function initCounterAnimation() {
-    const counters = DOM.counters;
+    const counters = document.querySelectorAll('[data-count]');
     
-    if (!counters.length) return;
+    if (counters.length === 0) return;
     
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-    };
-    
-    function animateCounter(counter) {
+    const animateCounter = (counter) => {
         const target = parseInt(counter.getAttribute('data-count'));
-        const duration = CONFIG.animationDuration;
-        const step = target / (duration / 16); // 60fps
+        const duration = 2000;
+        const step = target / (duration / 16);
         let current = 0;
         
-        const updateCounter = function() {
+        const updateCounter = () => {
             current += step;
             
             if (current < target) {
@@ -280,239 +136,273 @@ function initCounterAnimation() {
         };
         
         updateCounter();
-    }
+    };
     
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+    // Intersection Observer for counters
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
+    
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
                 animateCounter(entry.target);
-                observer.unobserve(entry.target);
+                counterObserver.unobserve(entry.target);
             }
         });
     }, observerOptions);
     
-    counters.forEach(function(counter) {
-        observer.observe(counter);
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
     });
 }
 
-/* ============================================== */
-/* 7. AOS INITIALIZATION                          */
-/* ============================================== */
-
+// ========== AOS INITIALIZATION ==========
 function initAOS() {
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,
             easing: 'ease-out-cubic',
             once: true,
-            offset: 50,
-            delay: 0,
-            anchorPlacement: 'top-bottom',
-            disable: function() {
-                // Disable on mobile for better performance
-                return window.innerWidth < 768;
-            }
-        });
-        
-        // Refresh AOS on window resize
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
-                AOS.refresh();
-            }, 250);
+            offset: 100,
+            delay: 100
         });
     }
 }
 
-/* ============================================== */
-/* 8. PARTICLES.JS CONFIGURATION                  */
-/* ============================================== */
-
-function initParticles() {
-    if (!CONFIG.particlesEnabled) return;
+// ========== APP FILTER ==========
+function initAppFilter() {
+    const filterBtns = document.querySelectorAll('.app-categories .category-btn');
+    const appCards = document.querySelectorAll('.app-card');
     
-    const particlesContainer = document.getElementById('particles-js');
+    if (filterBtns.length === 0) return;
     
-    if (!particlesContainer || typeof particlesJS === 'undefined') return;
-    
-    particlesJS('particles-js', {
-        particles: {
-            number: {
-                value: 50,
-                density: {
-                    enable: true,
-                    value_area: 800
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            
+            // Filter apps
+            appCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.5s ease forwards';
+                } else {
+                    card.style.display = 'none';
                 }
-            },
-            color: {
-                value: '#0056B3'
-            },
-            shape: {
-                type: 'circle',
-                stroke: {
-                    width: 0,
-                    color: '#000000'
-                }
-            },
-            opacity: {
-                value: 0.3,
-                random: true,
-                anim: {
-                    enable: true,
-                    speed: 1,
-                    opacity_min: 0.1,
-                    sync: false
-                }
-            },
-            size: {
-                value: 3,
-                random: true,
-                anim: {
-                    enable: true,
-                    speed: 2,
-                    size_min: 0.1,
-                    sync: false
-                }
-            },
-            line_linked: {
-                enable: true,
-                distance: 150,
-                color: '#0056B3',
-                opacity: 0.2,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 1,
-                direction: 'none',
-                random: true,
-                straight: false,
-                out_mode: 'out',
-                bounce: false,
-                attract: {
-                    enable: false,
-                    rotateX: 600,
-                    rotateY: 1200
-                }
-            }
-        },
-        interactivity: {
-            detect_on: 'canvas',
-            events: {
-                onhover: {
-                    enable: true,
-                    mode: 'grab'
-                },
-                onclick: {
-                    enable: true,
-                    mode: 'push'
-                },
-                resize: true
-            },
-            modes: {
-                grab: {
-                    distance: 140,
-                    line_linked: {
-                        opacity: 0.5
-                    }
-                },
-                push: {
-                    particles_nb: 3
-                }
-            }
-        },
-        retina_detect: true
+            });
+            
+            // Track filter click
+            trackClick('app-filter-' + filter);
+        });
     });
 }
 
-/* ============================================== */
-/* 9. CONTACT DRAWER                              */
-/* ============================================== */
+// ========== PORTFOLIO FILTER ==========
+function initPortfolioFilter() {
+    const filterBtns = document.querySelectorAll('.portfolio-filter .filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-grid > div');
+    
+    if (filterBtns.length === 0) return;
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            
+            // Filter portfolio items
+            portfolioItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                
+                if (filter === 'all' || category === filter) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.5s ease forwards';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Track filter click
+            trackClick('portfolio-filter-' + filter);
+        });
+    });
+}
 
+// ========== CONTACT FORM ==========
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    const successMessage = document.getElementById('formSuccess');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: form.querySelector('#name').value,
+            email: form.querySelector('#email').value,
+            phone: form.querySelector('#phone').value || '',
+            subject: form.querySelector('#subject').value,
+            budget: form.querySelector('#budget').value || '',
+            message: form.querySelector('#message').value,
+            timestamp: new Date().toISOString(),
+            source: 'contact-form',
+            page: window.location.pathname,
+            userAgent: navigator.userAgent
+        };
+        
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+            // Save to Firebase
+            await saveContactForm(formData);
+            
+            // Show success message
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Track submission
+            trackClick('contact-form-submitted');
+            
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                form.reset();
+                form.style.display = 'block';
+                successMessage.style.display = 'none';
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
+            
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Something went wrong. Please try again.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// ========== DRAWER CONTACT FORM ==========
+function initDrawerContactForm() {
+    const form = document.getElementById('drawerContactForm');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: form.querySelector('[name="drawerName"]').value,
+            email: form.querySelector('[name="drawerEmail"]').value,
+            phone: form.querySelector('[name="drawerPhone"]').value || '',
+            message: form.querySelector('[name="drawerMessage"]').value,
+            timestamp: new Date().toISOString(),
+            source: 'drawer-form',
+            page: window.location.pathname,
+            userAgent: navigator.userAgent
+        };
+        
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Sending...';
+        submitBtn.disabled = true;
+        
+        try {
+            // Save to Firebase
+            await saveContactForm(formData);
+            
+            // Show success
+            alert('Thank you! Your message has been sent successfully.');
+            form.reset();
+            
+            // Close drawer
+            closeContactDrawer();
+            
+            // Track submission
+            trackClick('drawer-form-submitted');
+            
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Something went wrong. Please try again.');
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// ========== CONTACT DRAWER ==========
 function initContactDrawer() {
-    const floatingBtn = DOM.floatingContactBtn;
-    const drawer = DOM.contactDrawer;
-    const closeBtn = DOM.drawerClose;
-    const overlay = DOM.drawerOverlay;
+    const floatingBtn = document.getElementById('floatingContactBtn');
+    const drawer = document.getElementById('contactDrawer');
+    const closeBtn = document.getElementById('drawerClose');
+    const overlay = document.getElementById('drawerOverlay');
     
     if (!floatingBtn || !drawer) return;
     
     // Open drawer
     floatingBtn.addEventListener('click', function() {
-        openDrawer();
+        drawer.classList.add('open');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        trackClick('floating-contact-btn');
     });
     
     // Close drawer
+    const closeDrawer = () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+    
     if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            closeDrawer();
-        });
+        closeBtn.addEventListener('click', closeDrawer);
     }
     
-    // Close on overlay click
     if (overlay) {
-        overlay.addEventListener('click', function() {
-            closeDrawer();
-        });
+        overlay.addEventListener('click', closeDrawer);
     }
     
     // Close on escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && drawer.classList.contains('active')) {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) {
             closeDrawer();
         }
     });
     
-    function openDrawer() {
-        drawer.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        // Focus first input
-        const firstInput = drawer.querySelector('input, textarea');
-        if (firstInput) {
-            setTimeout(function() {
-                firstInput.focus();
-            }, 300);
-        }
-    }
-    
-    function closeDrawer() {
-        drawer.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    // Expose functions globally
-    window.openContactDrawer = openDrawer;
+    // Make closeDrawer globally accessible
     window.closeContactDrawer = closeDrawer;
 }
 
-/* ============================================== */
-/* 10. BACK TO TOP BUTTON                         */
-/* ============================================== */
-
+// ========== BACK TO TOP ==========
 function initBackToTop() {
-    const backToTop = DOM.backToTop;
+    const backToTop = document.getElementById('backToTop');
     
     if (!backToTop) return;
     
-    // Show/hide button based on scroll position
-    function toggleBackToTop() {
-        if (window.pageYOffset > 400) {
-            backToTop.classList.add('visible');
-        } else {
-            backToTop.classList.remove('visible');
-        }
-    }
-    
-    // Throttled scroll listener
-    let scrollTimeout;
+    // Show/hide button based on scroll
     window.addEventListener('scroll', function() {
-        if (scrollTimeout) {
-            window.cancelAnimationFrame(scrollTimeout);
+        if (window.pageYOffset > 500) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
         }
-        scrollTimeout = window.requestAnimationFrame(toggleBackToTop);
     });
     
     // Scroll to top on click
@@ -521,603 +411,150 @@ function initBackToTop() {
             top: 0,
             behavior: 'smooth'
         });
-    });
-    
-    // Initial check
-    toggleBackToTop();
-}
-
-/* ============================================== */
-/* 11. PRICING TOGGLE                             */
-/* ============================================== */
-
-function initPricingToggle() {
-    const toggle = DOM.billingToggle;
-    
-    if (!toggle) return;
-    
-    const priceElements = document.querySelectorAll('.price-amount[data-monthly][data-yearly]');
-    
-    toggle.addEventListener('change', function() {
-        const isYearly = this.checked;
-        
-        priceElements.forEach(function(priceEl) {
-            const monthlyPrice = priceEl.getAttribute('data-monthly');
-            const yearlyPrice = priceEl.getAttribute('data-yearly');
-            
-            // Animate price change
-            priceEl.style.opacity = '0';
-            priceEl.style.transform = 'translateY(-10px)';
-            
-            setTimeout(function() {
-                priceEl.textContent = isYearly ? yearlyPrice : monthlyPrice;
-                priceEl.style.opacity = '1';
-                priceEl.style.transform = 'translateY(0)';
-            }, 200);
-        });
-        
-        // Update period text
-        const periodElements = document.querySelectorAll('.price-period');
-        periodElements.forEach(function(el) {
-            el.textContent = isYearly ? '/year' : '/month';
-        });
+        trackClick('back-to-top');
     });
 }
 
-/* ============================================== */
-/* 12. FORM HANDLING                              */
-/* ============================================== */
-
-function initFormHandling() {
-    // Main Contact Form
-    const contactForm = DOM.contactForm;
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactForm);
-    }
-    
-    // Quick Contact Form (Drawer)
-    const quickForm = DOM.quickContactForm;
-    
-    if (quickForm) {
-        quickForm.addEventListener('submit', handleQuickContactForm);
-    }
-}
-
-async function handleContactForm(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
-    
-    // Get form data
-    const formData = {
-        name: form.querySelector('#contactName').value,
-        email: form.querySelector('#contactEmail').value,
-        phone: form.querySelector('#contactPhone').value,
-        service: form.querySelector('#contactService').value,
-        subject: form.querySelector('#contactSubject').value,
-        message: form.querySelector('#contactMessage').value,
-        timestamp: new Date().toISOString()
-    };
-    
-    // Validate
-    if (!validateForm(formData)) {
-        showNotification('Please fill all required fields correctly.', 'error');
-        return;
-    }
-    
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
-    
-    try {
-        // Send to Firebase (if configured)
-        if (typeof sendToFirebase === 'function') {
-            await sendToFirebase('contacts', formData);
-        }
-        
-        // Simulate API call
-        await simulateAPICall(1500);
-        
-        // Success
-        showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
-        form.reset();
-        
-    } catch (error) {
-        console.error('Form submission error:', error);
-        showNotification('Failed to send message. Please try again.', 'error');
-        
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-    }
-}
-
-async function handleQuickContactForm(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
-    
-    // Get form data
-    const formData = {
-        name: form.querySelector('#quickName').value,
-        email: form.querySelector('#quickEmail').value,
-        phone: form.querySelector('#quickPhone').value,
-        message: form.querySelector('#quickMessage').value,
-        source: 'Quick Contact Drawer',
-        timestamp: new Date().toISOString()
-    };
-    
-    // Validate
-    if (!formData.name || !formData.email || !formData.message) {
-        showNotification('Please fill all required fields.', 'error');
-        return;
-    }
-    
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
-    
-    try {
-        // Send to Firebase (if configured)
-        if (typeof sendToFirebase === 'function') {
-            await sendToFirebase('quick_contacts', formData);
-        }
-        
-        // Simulate API call
-        await simulateAPICall(1000);
-        
-        // Success
-        showNotification('Message sent! We\'ll contact you shortly.', 'success');
-        form.reset();
-        
-        // Close drawer after success
-        setTimeout(function() {
-            if (typeof closeContactDrawer === 'function') {
-                closeContactDrawer();
-            }
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Quick form submission error:', error);
-        showNotification('Failed to send. Please try again.', 'error');
-        
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-    }
-}
-
-function validateForm(data) {
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    if (!data.name || data.name.length < 2) return false;
-    if (!data.email || !emailRegex.test(data.email)) return false;
-    if (!data.message || data.message.length < 10) return false;
-    
-    return true;
-}
-
-function simulateAPICall(delay = 1000) {
-    return new Promise(function(resolve) {
-        setTimeout(resolve, delay);
-    });
-}
-
-/* ============================================== */
-/* 13. NEWSLETTER SUBSCRIPTION                    */
-/* ============================================== */
-
+// ========== NEWSLETTER FORM ==========
 function initNewsletterForm() {
-    const forms = document.querySelectorAll('.newsletter-form, .newsletter-form-footer');
+    const form = document.getElementById('newsletterForm');
     
-    forms.forEach(function(form) {
-        form.addEventListener('submit', handleNewsletterSubmit);
-    });
-}
-
-async function handleNewsletterSubmit(e) {
-    e.preventDefault();
+    if (!form) return;
     
-    const form = e.target;
-    const emailInput = form.querySelector('input[type="email"]');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const email = emailInput.value.trim();
-    
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        showNotification('Please enter a valid email address.', 'error');
-        emailInput.focus();
-        return;
-    }
-    
-    // Show loading
-    const originalBtnContent = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-    
-    try {
-        // Send to Firebase (if configured)
-        if (typeof sendToFirebase === 'function') {
-            await sendToFirebase('newsletter', {
-                email: email,
-                subscribedAt: new Date().toISOString()
-            });
-        }
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        // Simulate API call
-        await simulateAPICall(800);
+        const email = form.querySelector('input[type="email"]').value;
         
-        // Success
-        showNotification('Successfully subscribed! Welcome to Gothwad Technologies.', 'success');
-        emailInput.value = '';
-        
-    } catch (error) {
-        console.error('Newsletter subscription error:', error);
-        showNotification('Subscription failed. Please try again.', 'error');
-        
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnContent;
-    }
-}
-
-/* ============================================== */
-/* 14. MOBILE MENU                                */
-/* ============================================== */
-
-function initMobileMenu() {
-    const toggler = DOM.navbarToggler;
-    const collapse = DOM.navbarCollapse;
-    
-    if (!toggler || !collapse) return;
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        const isClickInside = toggler.contains(e.target) || collapse.contains(e.target);
-        
-        if (!isClickInside && collapse.classList.contains('show')) {
-            closeMobileMenu();
-        }
-    });
-    
-    // Close menu on window resize
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 992 && collapse.classList.contains('show')) {
-            closeMobileMenu();
-        }
-    });
-}
-
-function closeMobileMenu() {
-    const collapse = DOM.navbarCollapse;
-    const toggler = DOM.navbarToggler;
-    
-    if (collapse && collapse.classList.contains('show')) {
-        // Use Bootstrap's collapse method if available
-        if (typeof bootstrap !== 'undefined') {
-            const bsCollapse = bootstrap.Collapse.getInstance(collapse);
-            if (bsCollapse) {
-                bsCollapse.hide();
-            }
-        } else {
-            collapse.classList.remove('show');
-            if (toggler) {
-                toggler.classList.add('collapsed');
-                toggler.setAttribute('aria-expanded', 'false');
-            }
-        }
-    }
-}
-
-/* ============================================== */
-/* 15. TOOLTIPS & POPOVERS                        */
-/* ============================================== */
-
-function initTooltips() {
-    // Initialize Bootstrap tooltips
-    if (typeof bootstrap !== 'undefined') {
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-            new bootstrap.Tooltip(tooltipTriggerEl, {
-                trigger: 'hover',
-                placement: 'top'
-            });
-        });
-        
-        // Initialize Bootstrap popovers
-        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-        popoverTriggerList.forEach(function(popoverTriggerEl) {
-            new bootstrap.Popover(popoverTriggerEl);
-        });
-    }
-}
-
-/* ============================================== */
-/* 16. APP STORE TABS                             */
-/* ============================================== */
-
-function initAppStoreTabs() {
-    const tabButtons = document.querySelectorAll('#appStoreTab .nav-link');
-    
-    if (!tabButtons.length) return;
-    
-    tabButtons.forEach(function(button) {
-        button.addEventListener('shown.bs.tab', function(e) {
-            // Refresh AOS animations for new content
-            if (typeof AOS !== 'undefined') {
-                AOS.refresh();
-            }
+        try {
+            // Save to Firebase
+            await saveNewsletter(email);
             
-            // Analytics tracking (if implemented)
-            const tabName = e.target.textContent.trim();
-            console.log('App Store Tab switched to:', tabName);
+            alert('Thank you for subscribing!');
+            form.reset();
+            
+            trackClick('newsletter-subscribed');
+            
+        } catch (error) {
+            console.error('Error subscribing:', error);
+            alert('Something went wrong. Please try again.');
+        }
+    });
+}
+
+// ========== NAV HIGHLIGHT ON SCROLL ==========
+function initNavHighlight() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    if (sections.length === 0) return;
+    
+    window.addEventListener('scroll', function() {
+        let current = '';
+        const headerHeight = document.getElementById('mainHeader').offsetHeight;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - headerHeight - 100;
+            const sectionHeight = section.offsetHeight;
+            
+            if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
         });
     });
 }
 
-/* ============================================== */
-/* 17. TESTIMONIAL SLIDER                         */
-/* ============================================== */
-
-function initTestimonialSlider() {
-    // If using a slider library like Swiper or Slick
-    // Initialize it here
-    
-    const slider = document.querySelector('.testimonial-slider');
-    
-    if (!slider) return;
-    
-    // Example with native scroll snap (no library needed)
-    // The CSS handles the snap behavior
-    
-    // Auto-play functionality (optional)
-    // let currentSlide = 0;
-    // const slides = slider.querySelectorAll('.testimonial-card');
-    // const totalSlides = slides.length;
-    
-    // setInterval(() => {
-    //     currentSlide = (currentSlide + 1) % totalSlides;
-    //     // Scroll to next slide
-    // }, 5000);
-}
-
-/* ============================================== */
-/* 18. TYPING EFFECT                              */
-/* ============================================== */
-
+// ========== TYPING EFFECT ==========
 function initTypingEffect() {
-    const typingElements = document.querySelectorAll('[data-typing]');
+    const typingElements = document.querySelectorAll('.typing-effect');
     
-    if (!typingElements.length) return;
-    
-    typingElements.forEach(function(element) {
-        const text = element.getAttribute('data-typing');
-        const words = text.split(',').map(function(word) {
-            return word.trim();
-        });
+    typingElements.forEach(element => {
+        const text = element.getAttribute('data-text');
+        if (!text) return;
         
+        const words = text.split(',');
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        let isPaused = false;
         
         function type() {
             const currentWord = words[wordIndex];
             
-            if (isPaused) {
-                setTimeout(type, 1500);
-                isPaused = false;
-                isDeleting = true;
-                return;
-            }
-            
             if (isDeleting) {
                 element.textContent = currentWord.substring(0, charIndex - 1);
                 charIndex--;
-                
-                if (charIndex === 0) {
-                    isDeleting = false;
-                    wordIndex = (wordIndex + 1) % words.length;
-                }
             } else {
                 element.textContent = currentWord.substring(0, charIndex + 1);
                 charIndex++;
-                
-                if (charIndex === currentWord.length) {
-                    isPaused = true;
-                }
             }
             
-            const typingSpeed = isDeleting ? CONFIG.typingSpeed / 2 : CONFIG.typingSpeed;
-            setTimeout(type, typingSpeed);
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(type, typeSpeed);
         }
         
         type();
     });
 }
 
-/* ============================================== */
-/* 19. LAZY LOADING IMAGES                        */
-/* ============================================== */
-
-function initLazyLoading() {
-    // Native lazy loading is supported in modern browsers
-    // This is a fallback for older browsers
+// ========== TRACK CLICK FUNCTION ==========
+function trackClick(elementId) {
+    const clickData = {
+        elementId: elementId,
+        timestamp: new Date().toISOString(),
+        page: window.location.pathname,
+        userAgent: navigator.userAgent,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        referrer: document.referrer || 'direct'
+    };
     
-    if ('loading' in HTMLImageElement.prototype) {
-        // Native lazy loading supported
-        const images = document.querySelectorAll('img[loading="lazy"]');
-        images.forEach(function(img) {
-            if (img.dataset.src) {
-                img.src = img.dataset.src;
-            }
-        });
-    } else {
-        // Fallback to Intersection Observer
-        const lazyImages = document.querySelectorAll('img[data-src]');
-        
-        if (!lazyImages.length) return;
-        
-        const imageObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    imageObserver.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: '50px 0px'
-        });
-        
-        lazyImages.forEach(function(img) {
-            imageObserver.observe(img);
-        });
-    }
+    // Save to Firebase
+    saveClickEvent(clickData);
+    
+    // Console log for debugging
+    console.log('Click tracked:', elementId);
 }
 
-/* ============================================== */
-/* 20. UTILITY FUNCTIONS                          */
-/* ============================================== */
-
-// Show notification/toast
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotification = document.querySelector('.custom-notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
+// ========== TRACK PAGE VIEW ==========
+function trackPageView() {
+    const pageData = {
+        page: window.location.pathname,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        referrer: document.referrer || 'direct',
+        language: navigator.language
+    };
     
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `custom-notification notification-${type}`;
-    
-    // Icon based on type
-    let icon = 'info-circle';
-    if (type === 'success') icon = 'check-circle-fill';
-    if (type === 'error') icon = 'exclamation-circle-fill';
-    if (type === 'warning') icon = 'exclamation-triangle-fill';
-    
-    notification.innerHTML = `
-        <div class="notification-content">
-            <i class="bi bi-${icon}"></i>
-            <span>${message}</span>
-        </div>
-        <button class="notification-close">
-            <i class="bi bi-x"></i>
-        </button>
-    `;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        max-width: 400px;
-        padding: 16px 20px;
-        background: ${type === 'success' ? '#28A745' : type === 'error' ? '#DC3545' : type === 'warning' ? '#FFC107' : '#17A2B8'};
-        color: ${type === 'warning' ? '#212529' : '#FFFFFF'};
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        z-index: 99999;
-        animation: slideInRight 0.3s ease;
-        font-family: 'Inter', sans-serif;
-    `;
-    
-    // Add animation keyframes
-    if (!document.getElementById('notification-styles')) {
-        const styles = document.createElement('style');
-        styles.id = 'notification-styles';
-        styles.textContent = `
-            @keyframes slideInRight {
-                from {
-                    opacity: 0;
-                    transform: translateX(100px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            @keyframes slideOutRight {
-                from {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-                to {
-                    opacity: 0;
-                    transform: translateX(100px);
-                }
-            }
-            .custom-notification .notification-content {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-            .custom-notification .notification-content i {
-                font-size: 20px;
-            }
-            .custom-notification .notification-close {
-                background: rgba(255,255,255,0.2);
-                border: none;
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                color: inherit;
-                transition: background 0.2s;
-            }
-            .custom-notification .notification-close:hover {
-                background: rgba(255,255,255,0.3);
-            }
-        `;
-        document.head.appendChild(styles);
-    }
-    
-    // Append to body
-    document.body.appendChild(notification);
-    
-    // Close button handler
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', function() {
-        removeNotification(notification);
-    });
-    
-    // Auto remove after 5 seconds
-    setTimeout(function() {
-        removeNotification(notification);
-    }, 5000);
+    // Save to Firebase
+    savePageView(pageData);
 }
 
-function removeNotification(notification) {
-    if (notification && notification.parentNode) {
-        notification.style.animation = 'slideOutRight 0.3s ease forwards';
-        setTimeout(function() {
-            notification.remove();
-        }, 300);
-    }
-}
+// ========== UTILITY FUNCTIONS ==========
 
-// Debounce function
+// Debounce function for performance
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
-        const later = function() {
+        const later = () => {
             clearTimeout(timeout);
             func(...args);
         };
@@ -1126,16 +563,14 @@ function debounce(func, wait) {
     };
 }
 
-// Throttle function
+// Throttle function for performance
 function throttle(func, limit) {
     let inThrottle;
     return function(...args) {
         if (!inThrottle) {
             func.apply(this, args);
             inThrottle = true;
-            setTimeout(function() {
-                inThrottle = false;
-            }, limit);
+            setTimeout(() => inThrottle = false, limit);
         }
     };
 }
@@ -1143,6 +578,22 @@ function throttle(func, limit) {
 // Format number with commas
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Get URL parameters
+function getUrlParams() {
+    const params = {};
+    const queryString = window.location.search.slice(1);
+    const pairs = queryString.split('&');
+    
+    pairs.forEach(pair => {
+        const [key, value] = pair.split('=');
+        if (key) {
+            params[decodeURIComponent(key)] = decodeURIComponent(value || '');
+        }
+    });
+    
+    return params;
 }
 
 // Check if element is in viewport
@@ -1156,101 +607,257 @@ function isInViewport(element) {
     );
 }
 
-// Get current year (for copyright)
-function getCurrentYear() {
-    return new Date().getFullYear();
+// Copy to clipboard
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Copied to clipboard!');
+    }
 }
 
-// Update copyright year dynamically
-(function updateCopyrightYear() {
-    const yearElements = document.querySelectorAll('.current-year');
-    const currentYear = getCurrentYear();
+// ========== IMAGE LAZY LOADING ==========
+function initLazyLoading() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
     
-    yearElements.forEach(function(el) {
-        el.textContent = currentYear;
-    });
-})();
-
-/* ============================================== */
-/* ADDITIONAL INTERACTIVE FEATURES               */
-/* ============================================== */
-
-// App card hover effect
-document.addEventListener('DOMContentLoaded', function() {
-    const appCards = document.querySelectorAll('.app-card');
-    
-    appCards.forEach(function(card) {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px)';
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                }
+            });
         });
         
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+        lazyImages.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for older browsers
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
         });
-    });
-});
-
-// Get button click handlers
-document.addEventListener('DOMContentLoaded', function() {
-    const getButtons = document.querySelectorAll('.btn-get');
-    
-    getButtons.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const appCard = this.closest('.app-card');
-            const appName = appCard ? appCard.querySelector('.app-name').textContent : 'App';
-            
-            showNotification(`${appName} - Redirecting to download page...`, 'info');
-            
-            // Redirect or open modal here
-            setTimeout(function() {
-                // window.location.href = '/download/' + appName.toLowerCase().replace(/\s+/g, '-');
-                console.log('Download:', appName);
-            }, 1000);
-        });
-    });
-});
-
-// Parallax effect for hero section
-document.addEventListener('DOMContentLoaded', function() {
-    const heroSection = document.querySelector('.hero-section');
-    
-    if (!heroSection) return;
-    
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = heroSection.querySelectorAll('.phone-mockup');
-        
-        parallaxElements.forEach(function(el, index) {
-            const speed = 0.1 + (index * 0.05);
-            el.style.transform = `translateY(${scrolled * speed}px) rotate(${el.classList.contains('phone-primary') ? -5 : 8}deg)`;
-        });
-    });
-});
-
-// Console branding
-console.log('%c🚀 Gothwad Technologies Pvt. Ltd.', 'font-size: 24px; font-weight: bold; color: #0056B3;');
-console.log('%cBuilding the Future of Software', 'font-size: 14px; color: #6C757D;');
-console.log('%cFounded by Pawan Gothwad', 'font-size: 12px; color: #6C757D;');
-console.log('%c---', 'color: #ccc;');
-console.log('%cInterested in working with us? Visit: https://gothwadtech.com/careers', 'font-size: 12px; color: #28A745;');
-
-/* ============================================== */
-/* EXPORT FUNCTIONS (if using modules)            */
-/* ============================================== */
-
-// For ES6 modules support
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        showNotification,
-        debounce,
-        throttle,
-        formatNumber,
-        isInViewport
-    };
+    }
 }
 
-/* ============================================== */
-/* END OF SCRIPT.JS                               */
-/* ============================================== */
+// ========== PARALLAX EFFECT ==========
+function initParallax() {
+    const parallaxElements = document.querySelectorAll('.parallax');
+    
+    if (parallaxElements.length === 0) return;
+    
+    window.addEventListener('scroll', throttle(() => {
+        const scrollY = window.pageYOffset;
+        
+        parallaxElements.forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            element.style.transform = `translateY(${scrollY * speed}px)`;
+        });
+    }, 16));
+}
+
+// ========== TOOLTIP INITIALIZATION ==========
+function initTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+// ========== MODAL HANDLER ==========
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        const bsModal = bootstrap.Modal.getInstance(modal);
+        if (bsModal) {
+            bsModal.hide();
+        }
+    }
+}
+
+// ========== FORM VALIDATION ==========
+function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function validatePhone(phone) {
+    const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    return re.test(String(phone));
+}
+
+// ========== DATE FORMATTING ==========
+function formatDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-IN', options);
+}
+
+function formatTime(date) {
+    const options = { hour: '2-digit', minute: '2-digit' };
+    return new Date(date).toLocaleTimeString('en-IN', options);
+}
+
+function timeAgo(date) {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + ' years ago';
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + ' months ago';
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + ' days ago';
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + ' hours ago';
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + ' minutes ago';
+    
+    return Math.floor(seconds) + ' seconds ago';
+}
+
+// ========== LOCAL STORAGE HELPERS ==========
+function setLocalStorage(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+    } catch (e) {
+        console.error('Error saving to localStorage:', e);
+        return false;
+    }
+}
+
+function getLocalStorage(key) {
+    try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+    } catch (e) {
+        console.error('Error reading from localStorage:', e);
+        return null;
+    }
+}
+
+function removeLocalStorage(key) {
+    try {
+        localStorage.removeItem(key);
+        return true;
+    } catch (e) {
+        console.error('Error removing from localStorage:', e);
+        return false;
+    }
+}
+
+// ========== SESSION TRACKING ==========
+function initSessionTracking() {
+    let sessionId = getLocalStorage('sessionId');
+    
+    if (!sessionId) {
+        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        setLocalStorage('sessionId', sessionId);
+    }
+    
+    return sessionId;
+}
+
+// ========== ERROR HANDLING ==========
+window.onerror = function(message, source, lineno, colno, error) {
+    console.error('Global error:', {
+        message,
+        source,
+        lineno,
+        colno,
+        error
+    });
+    
+    // You could send this to Firebase for error tracking
+    return false;
+};
+
+// ========== PERFORMANCE MONITORING ==========
+function logPerformance() {
+    if (window.performance) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        const domReady = timing.domContentLoadedEventEnd - timing.navigationStart;
+        
+        console.log('Performance Metrics:');
+        console.log('- Page Load Time:', loadTime + 'ms');
+        console.log('- DOM Ready Time:', domReady + 'ms');
+    }
+}
+
+// Run performance logging after load
+window.addEventListener('load', function() {
+    setTimeout(logPerformance, 0);
+});
+
+// ========== SERVICE WORKER REGISTRATION ==========
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('ServiceWorker registered:', registration);
+            })
+            .catch(error => {
+                console.log('ServiceWorker registration failed:', error);
+            });
+    }
+}
+
+// ========== NOTIFICATION PERMISSION ==========
+async function requestNotificationPermission() {
+    if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        return permission === 'granted';
+    }
+    return false;
+}
+
+// ========== SHARE API ==========
+async function shareContent(title, text, url) {
+    if (navigator.share) {
+        try {
+            await navigator.share({ title, text, url });
+            trackClick('share-content');
+            return true;
+        } catch (err) {
+            console.error('Share failed:', err);
+            return false;
+        }
+    } else {
+        // Fallback - copy link
+        copyToClipboard(url);
+        return true;
+    }
+}
+
+// ========== CONSOLE BRANDING ==========
+console.log('%c Gothwad Technologies Pvt. Ltd. ', 
+    'background: #0056B3; color: white; font-size: 20px; padding: 10px 20px; border-radius: 5px;');
+console.log('%c Building the Future of Software ', 
+    'color: #0056B3; font-size: 14px; padding: 5px;');
+console.log('%c 🚀 Founded by Pawan Gothwad ', 
+    'color: #666; font-size: 12px;');
