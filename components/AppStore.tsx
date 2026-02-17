@@ -77,6 +77,8 @@ const apps = [
 ];
 
 const AppStore: React.FC = () => {
+  const storeUrl = "https://gtech-gothwad.github.io/gtech-store/";
+
   return (
     <div className="space-y-32">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -113,14 +115,19 @@ const AppStore: React.FC = () => {
               {app.description}
             </p>
             
-            <button className="w-full bg-[#0056B3]/5 hover:bg-[#0056B3] hover:text-white text-[#0056B3] py-4 rounded-2xl font-black transition-all border border-[#0056B3]/10 group-hover:border-transparent group-hover:shadow-xl group-hover:shadow-[#0056B3]/20">
+            <a 
+              href={storeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-[#0056B3]/5 hover:bg-[#0056B3] hover:text-white text-[#0056B3] py-4 rounded-2xl font-black transition-all border border-[#0056B3]/10 group-hover:border-transparent group-hover:shadow-xl group-hover:shadow-[#0056B3]/20 text-center block"
+            >
               Get Source Code
-            </button>
+            </a>
           </div>
         ))}
       </div>
 
-      {/* Massive CTA for App Store */}
+      {/* Massive CTA for App Store - Updated with Blue Theme and External Link */}
       <div className="bg-white rounded-[60px] p-12 md:p-24 border border-slate-100 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-50 rounded-full blur-[120px] -mr-48 -mt-48 group-hover:bg-blue-100 transition-colors"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
@@ -132,9 +139,14 @@ const AppStore: React.FC = () => {
               Don't reinvent the wheel. Visit the GTech App Store to browse 500+ production-ready source codes, UI kits, and backend modules.
             </p>
             <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-               <button className="bg-[#0056B3] text-white px-12 py-6 rounded-3xl font-black text-lg shadow-2xl shadow-blue-500/30 hover:-translate-y-2 transition-transform">
+               <a 
+                 href={storeUrl}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="bg-[#0056B3] text-white px-12 py-6 rounded-3xl font-black text-lg shadow-2xl shadow-blue-500/30 hover:-translate-y-2 transition-transform inline-block text-center"
+               >
                  Visit GTech App Store
-               </button>
+               </a>
                <button className="bg-slate-900 text-white px-12 py-6 rounded-3xl font-black text-lg shadow-2xl hover:-translate-y-2 transition-transform">
                  Become a Seller
                </button>

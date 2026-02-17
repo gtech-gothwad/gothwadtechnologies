@@ -7,72 +7,87 @@ interface ContactDrawerProps {
 }
 
 const ContactDrawer: React.FC<ContactDrawerProps> = ({ isOpen, onClose }) => {
+  const gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=gothwadtechnologies@gmail.com";
+  const storeUrl = "https://gtech-gothwad.github.io/gtech-store/";
+
+  const shortcuts = [
+    { label: 'Direct Gmail', icon: '📧', action: () => { window.open(gmailUrl, '_blank'); onClose(); } },
+    { label: 'About Gothwad', icon: '🏢', action: () => { window.location.href = '#manifesto'; onClose(); } },
+    { label: 'GTech App Store', icon: '🛒', action: () => { window.open(storeUrl, '_blank'); onClose(); } },
+    { label: 'Technical Feedback', icon: '💬', action: () => { alert('Feedback module coming soon!'); onClose(); } },
+    { label: 'Report an Issue', icon: '⚠️', action: () => { alert('Bug report module coming soon!'); onClose(); } },
+  ];
+
+  if (!isOpen) return null;
+
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - Instant appearance */}
       <div 
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-[150] transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[150]"
         onClick={onClose}
       />
       
-      {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-[200] shadow-2xl transition-transform duration-500 ease-out transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-8 h-full flex flex-col">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-black text-slate-900">Get in Touch</h2>
-              <p className="text-slate-400 font-medium">Let's build something incredible.</p>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {/* Drawer - Instant appearance, non-full screen width */}
+      <div className="fixed top-0 right-0 h-full w-[85%] max-w-[320px] bg-white z-[200] shadow-2xl flex flex-col border-l border-slate-100">
+        <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter italic">Command Center</h2>
+            <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
+          <p className="text-slate-400 font-bold text-[8px] uppercase tracking-widest">Gothwad Ecosystem Access</p>
+        </div>
 
-          <form className="space-y-6 flex-grow">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Your Name</label>
-              <input type="text" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#0056B3] focus:bg-white transition-all outline-none" placeholder="John Doe" />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Email Address</label>
-              <input type="email" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#0056B3] focus:bg-white transition-all outline-none" placeholder="john@example.com" />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Interest</label>
-              <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#0056B3] focus:bg-white transition-all outline-none">
-                <option>School Management App</option>
-                <option>Custom App Development</option>
-                <option>Game Development</option>
-                <option>Consultation with CEO</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Message</label>
-              <textarea rows={4} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#0056B3] focus:bg-white transition-all outline-none" placeholder="Tell us about your project..."></textarea>
-            </div>
-
-            <button type="button" className="w-full bg-[#0056B3] text-white py-5 rounded-xl font-bold text-lg hover:bg-[#004494] shadow-xl transition-all">
-              Send Message
-            </button>
-          </form>
-
-          <div className="mt-12 pt-12 border-t border-slate-100">
-             <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-[#0056B3]">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        <div className="flex-grow overflow-y-auto p-6 space-y-8">
+          {/* Shortcuts Section */}
+          <section>
+            <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-[#0056B3] mb-4">Quick Links</h4>
+            <div className="grid grid-cols-1 gap-2">
+              {shortcuts.map((s, i) => (
+                <button 
+                  key={i} 
+                  onClick={s.action}
+                  className="w-full flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl hover:bg-white hover:border-[#0056B3] hover:shadow-md transition-all text-left group"
+                >
+                  <span className="text-xl">{s.icon}</span>
+                  <span className="font-bold text-slate-700 text-xs group-hover:text-slate-900 tracking-tight">{s.label}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-auto text-slate-300 group-hover:text-[#0056B3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
-                <div>
-                   <p className="text-xs font-bold text-slate-400 uppercase">Direct Helpline</p>
-                   <p className="text-lg font-black text-slate-900">+91 GOTHWAD-01</p>
-                </div>
-             </div>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Contact Form Section */}
+          <section>
+            <h4 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Inquiry</h4>
+            <form className="space-y-3">
+              <input type="text" className="w-full bg-slate-50 border border-slate-100 rounded-lg px-3 py-3 focus:ring-1 focus:ring-[#0056B3] focus:bg-white outline-none text-[11px]" placeholder="Name" />
+              <input type="email" className="w-full bg-slate-50 border border-slate-100 rounded-lg px-3 py-3 focus:ring-1 focus:ring-[#0056B3] focus:bg-white outline-none text-[11px]" placeholder="Email" />
+              <textarea rows={3} className="w-full bg-slate-50 border border-slate-100 rounded-lg px-3 py-3 focus:ring-1 focus:ring-[#0056B3] focus:bg-white outline-none text-[11px]" placeholder="Message..."></textarea>
+              <button type="button" className="w-full bg-slate-900 text-white py-3.5 rounded-lg font-black text-[9px] uppercase tracking-widest hover:bg-[#0056B3] transition-all">
+                Send Request
+              </button>
+            </form>
+          </section>
+        </div>
+
+        <div className="p-6 bg-slate-900 text-white">
+          <div className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-[#0056B3] rounded-xl flex items-center justify-center text-white shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[8px] font-black text-blue-400 uppercase tracking-widest leading-none mb-1">Support</p>
+              <a href={gmailUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold hover:text-blue-300 transition-colors truncate block">gothwadtechnologies@gmail.com</a>
+            </div>
           </div>
         </div>
       </div>

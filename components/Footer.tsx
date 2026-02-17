@@ -6,6 +6,8 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
+  const logoUrl = "https://i.ibb.co/KxxyJK63/IMG-20260215-091905-778.webp";
+
   return (
     <footer className="bg-slate-900 text-white pt-24 pb-12 overflow-hidden relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#0056B3] to-transparent"></div>
@@ -14,8 +16,8 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-[#0056B3] rounded-xl flex items-center justify-center">
-                 <span className="text-white font-bold text-xl">G</span>
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden border border-white/10">
+                 <img src={logoUrl} alt="Gothwad Logo" className="w-full h-full object-cover scale-110" />
               </div>
               <div>
                 <h1 className="text-xl font-bold tracking-tight">GOTHWAD</h1>
@@ -75,7 +77,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenContact }) => {
 
         <div className="border-t border-slate-800 pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-slate-500 text-xs">
-            © 2025 Gothwad Technologies Pvt. Ltd. All rights reserved.
+            © 2025 Gothwad Technologies. All rights reserved.
           </p>
           <div className="flex gap-8 text-xs text-slate-500 uppercase font-bold tracking-widest">
             <a href="#" className="hover:text-[#0056B3]">Privacy Policy</a>

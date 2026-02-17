@@ -15,7 +15,7 @@ const WhyUs: React.FC = () => {
           
           <div className="space-y-10">
             {[
-              { t: 'High Trust Philosophy', d: 'Operating as a Pvt. Ltd. entity ensures legal safety and enterprise commitment.' },
+              { t: 'High Trust Philosophy', d: 'Operating as a verified tech entity ensures transparency and absolute commitment.' },
               { t: 'Performance First', d: 'Our apps are optimized for low-end devices and slow internet connections.' },
               { t: 'Visionary Leadership', d: 'Direct guidance from Pawan Gothwad on architecture and strategy.' }
             ].map((item, i) => (

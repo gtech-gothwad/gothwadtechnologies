@@ -19,8 +19,8 @@ const milestones = [
   },
   {
     year: '2023',
-    title: 'Pvt. Ltd. Integration',
-    description: 'Incorporated as a Private Limited entity. Received national recognition for data-secure software architectures.'
+    title: 'Institutional Expansion',
+    description: 'Established as a premier technology developer. Received national recognition for data-secure software architectures.'
   },
   {
     year: '2024',
@@ -41,7 +41,7 @@ const Roadmap: React.FC = () => {
         <span className="text-blue-600 font-bold uppercase tracking-widest text-sm">Our Legacy</span>
         <h2 className="text-4xl md:text-6xl font-black mt-2 text-slate-900 leading-tight">Timeline of Excellence</h2>
         <p className="text-slate-500 mt-6 max-w-2xl mx-auto font-medium text-lg italic">
-          "From a single line of code to a registered powerhouse of digital innovation."
+          "From a single line of code to a premier powerhouse of digital innovation."
         </p>
       </div>
 
